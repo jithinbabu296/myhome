@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_sale_order_daily">
+        <t t-call="web.html_container">
+            <t t-call="custom_sale_order_report.custom_external_layout">
+                <div class="text-center">
+                    <h2 style="margin-top:-50px;">
+                        <strong >Daily Sales Report</strong>
+                    </h2>
+                </div>
+                <t t-foreach="docs" t-as="doc">
+                    <div t-if="doc.user_id.name" class="col-auto col-3 mw-100 mb-2 text-center">
+                        <p class="m-0" t-field="doc.user_id"/>
+                    </div>
+                      <table class="table table-sm  table-borderless ">
+                    <tbody >
+
+                        <tr class="text-left pl-5">
+                            <td>
+                                  <strong>Shop</strong>
+                            <span class="text-left pl-5 " t-field="doc.user_id.company_name"/>
+                            </td>
+                            <tr>
+                                <td>
+                                <sapn class="text-left" style="padding-left:90px;" t-field="doc.user_id.company_id"/>
+                                </td>
+                            </tr>
+
+                        </tr>
+                         <tr class="text-left pl-5 ">
+                            <td name="td_so" >
+                                <strong>Date</strong>
+                                <span class="pl-5" t-field ='doc.create_date'/>
+                          </td>
+                         </tr>
+                    </tbody>
+                      </table>
+<!--                <div class="row pb-3">-->
+<!--                    <strong style="padding-left:16px;">Shop</strong>-->
+<!--                        <span style="padding-left:100px;" t-field="doc.user_id.company_name"/>-->
+<!--                </div>-->
+<!--                    <div class="pb-3">-->
+<!--                     <span style="padding-left:140px;" t-field="doc.user_id.company_id"/>-->
+<!--                    </div>-->
+<!--                <strong>Date</strong>-->
+<!--                    <span style="padding-left:100px;" t-field ='doc.create_date'/>-->
+<!--                <div  class="row zero_min_height">-->
+<!--                    <div class="col-12">-->
+                <div style="border-bottom: 1px solid black;"/>
+<!--            </div>-->
+<!--        </div>-->
+                 <t t-set="current_qty" t-value="0"/>
+                 <t t-set="current_qty" t-value="current_qty + qty + refund_qty + cancel_order_qty"/>
+
+            <table class="table  table-sm  table-borderless pt-5">
+                <thead>
+                    <tr>
+                        <th name="th_fe" class="text-left pl-5"/>
+                        <th name="th_from" class="text-left pl-5">From</th>
+                        <th name="th_to" class="text-left pl-5 ">To</th>
+                        <th name="th_quantity"  class="text-left pl-5">Quantity</th>
+                        <th name="th_subtotal" class="text-right ">Amount</th>
+                    </tr>
+                </thead>
+        <tbody class="sale_tbody">
+            <tr class="text-left pl-5">
+                <td name="td_so" >
+                    <strong>SO.No</strong>
+                </td>
+                <td class="text-left pl-5">
+                    <span t-esc="order_from.name"/>
+                </td>
+                <td class="text-left pl-5">
+                    <span t-esc="order_to.name"/>
+
+                </td>
+                <td class="text-left pl-5">
+                      <span t-esc="qty"/>
+                 </td>
+                 <td class="text-right">
+                      <span t-esc="total_amount"/>
+                 </td>
+            </tr>
+               <tr class=" text-left pl-5">
+                <td name="td_so">
+                     <strong>CO.No</strong>
+                </td>
+            <td class="text-left pl-5">
+                <span t-esc="cancel_from.name"/>
+            </td>
+                <td class="text-left pl-5">
+                    <span t-esc="cancel_to.name"/>
+                </td>
+                    <td class="text-left pl-5">
+                      <span t-esc="cancel_order_qty"/>
+                    </td>
+                        <td class="text-right">
+                        <span t-esc="cancel_order_amount"/>
+                        </td>
+                </tr>
+            <tr class="text-left pl-5">
+                <td name="td_so">
+                    <strong>RO.No</strong>
+                </td>
+                <td class="text-left pl-5">
+                    <t t-foreach="docer.invoice_ids" t-as="invoice">
+             <div class="text-left" t-if="invoice.move_type == 'out_refund'">
+                <p class="m-0" t-field="invoice.name"/>
+             </div>
+                    </t>
+                </td>
+                <td class="text-left pl-5">
+                     <t t-foreach="docer.invoice_ids" t-as="invoice">
+             <div class="text-left" t-if="invoice.move_type == 'out_refund'">
+                <p class="m-0" t-field="invoice.name"/>
+             </div>
+                    </t>
+                </td>
+                    <td class="text-left pl-5">
+                        <span t-esc="refund_qty"/>
+                </td>
+                <td class="text-right">
+                    <span>-</span>
+                    <span t-esc="refund_total"/>
+                </td>
+            </tr >
+         </tbody>
+      </table>
+                    <div class="clearfix" name="so_total_summary">
+                        <table class="table table-sm">
+                            <tr class="border-black o_total ">
+                                 <td name="td_amount_total_label"><strong>Total</strong></td>
+                                  <td name="td_current_qty" class="text-right" style="padding-left:255px;">
+                                      <span t-esc="current_qty"/>
+                                  </td>
+                                   <td name="td_current_subtotal" class="text-right">
+                                    <span t-esc="total"/>
+                                       <span t-field="doc.currency_id.symbol"/>
+
+                                    </td>
+                                </tr>
+                        </table>
+                    </div>
+
+             <div  class="row zero_min_height">
+                <div class="col-12">
+                    <div style="border-bottom: 1px solid black;"/>
+            </div>
+        </div>
+
+
+
+             <table class="table table-sm  table-borderless ">
+                <thead>
+                    <tr>
+                        <th name="th_pay"  class="text-left ">SO Payment Type</th>
+                        <th name="th_qty" class="text-left ">Qty</th>
+                        <th name="th_unit" class="text-left"/>
+                        <th name="th_amount" class="text-right">Amount</th>
+                    </tr>
+                </thead>
+                    <tbody >
+                        <tr >
+                            <td >
+                              <div>Outstanding balance</div>
+                            </td>
+                            <td>
+                                <span t-esc="out_qty" class="pt-3"/>
+                                 <span t-esc="docer.user_id.currency_id.name" class="pl-3"/>
+                                <td>
+                                </td>
+                            </td>
+                            <td class="text-right">
+                                <t t-esc="outstanding_balance"/>
+                                <span t-field="doc.currency_id.symbol"/>
+                            </td>
+                    </tr>
+
+                <tr t-foreach="docer" t-as="ir" >
+                    <t t-foreach="ir.invoice_ids" t-as="i">
+                    <t t-if="i.move_type not in [ 'out_refund']">
+                    <td name="td_so" >
+                           <t t-foreach="i.invoice_line_ids.account_id.user_type_id" t-as="s">
+                                <div t-field="s.name"/>
+                            </t>
+                    </td>
+                <td>
+                     <t t-foreach="i.invoice_line_ids" t-as="s">
+                                <div>
+                                <span t-field="s.quantity" class="pt-3"/>
+                                 <span t-esc="docer.user_id.currency_id.name" class="pl-3"/>
+                         </div>
+                            </t>
+                </td>
+                    <td>
+               </td>
+                <td class="text-right">
+<!--                    <t t-foreach="ir.invoice_ids" t-as="s">-->
+                                <div t-field="i.amount_total"/>
+<!--                            </t>-->
+               </td>
+                    </t>
+                    </t>
+            </tr>
+                 </tbody>
+             </table>
+
+
+                       <div class="clearfix" name="so_total_summary">
+                            <table class="table table-sm">
+                     <tr class="border-black o_total ">
+                         <td name="td_amount_total_label"><strong>Total</strong></td>
+                          <td name="td_current_qty" class="text-right">
+                                      <span t-esc="total_payment"/>
+                                       <span t-field="doc.currency_id.symbol"/>
+
+                                  </td>
+                    </tr>
+                        </table>
+                     </div>
+                         <div  class="row zero_min_height">
+                            <div class="col-12">
+                                 <div style="border-bottom: 1px solid black;"/>
+                    </div>
+                 </div>
+
+                      <table class="table table-sm  table-borderless ">
+                        <thead>
+                  <tr>
+                      <th name="th_pay"  class="text-left pt-3">Total Refund Payment</th>
+                  </tr>
+                        </thead>
+
+
+                    <tbody class="sale_tbody">
+               <tr t-foreach="docer.invoice_ids" t-as="invoice">
+                   <t t-if="invoice.move_type == 'out_refund'">
+                 <td name="td_so" class="text-left">
+
+                        <span t-field="invoice.invoice_line_ids.account_id.user_type_id.name"/>
+                </td>
+                <td class="text-left">
+
+                      <t t-foreach="invoice.invoice_line_ids" t-as="s">
+                                <span>-</span>
+                                <span t-field="s.quantity"/>
+                                <span t-esc="docer.user_id.currency_id.name" class="pl-3"/>
+
+                            </t>
+
+                </td>
+                <td class="text-right">
+                    <span>-</span>
+                    <span t-field="invoice.amount_total"/>
+                </td>
+                    </t>
+            </tr>
+                 </tbody>
+
+             </table>
+                    <div class="clearfix" name="so_total_summary">
+                        <table class="table table-sm">
+                            <tr class="border-black o_total ">
+                                 <td name="td_amount_total_label"><strong>Total</strong></td>
+                                   <td name="td_current_subtotal" class="text-right">
+                                       <span>-</span>
+                                    <span class="text-right"  t-esc="refund_total"/>
+                                       <span t-field="doc.currency_id.symbol"/>
+                                   </td>
+                            </tr>
+                        </table>
+                    </div>
+                <div  class="row zero_min_height">
+                    <div class="col-12">
+                        <div style="border-bottom: 1px solid black;"/>
+                    </div>
+                </div>
+
+            <table class="table table-sm  table-borderless pt-5">
+              <thead>
+                  <tr>
+                      <th name="th_pay"  class="text-left pt-5">Total Payment</th>
+                  </tr>
+                    <tr>
+                        <th name="th_pay"  class="text-left pt-3">SO Payment Total</th>
+                        <th name="th_qty" class="text-left">Amount</th>
+                    </tr>
+                </thead>
+                  <tbody class="sale_tbody">
+                    <tr t-foreach="docer.invoice_ids" t-as="ds">
+                        <t t-if="not ds.move_type == 'out_refund'">
+                        <td name="td_so" class="text-left">
+                              <t t-foreach="ds.invoice_line_ids.account_id.user_type_id" t-as="s">
+                                <div t-field="s.name"/>
+                            </t>
+                        </td>
+                    <td style="padding-right:300px;">
+                         <t t-foreach="ds" t-as="s">
+                                <div t-field="s.amount_total"/>
+                            </t>
+                    </td>
+                        </t>
+                </tr>
+             </tbody>
+         </table>
+                    <div class="clearfix" name="so_total_summary">
+                            <table class="table table-sm">
+                     <tr class="border-black o_total">
+                         <td name="td_amount_total_label"><strong>Total</strong></td>
+                          <td name="td_total_payment" style="padding-right:57px;">
+                                      <span t-esc="main_total"/>
+                                     <span t-field="doc.currency_id.symbol"/>
+                          </td>
+                    </tr>
+                        </table>
+                     </div>
+
+                      <div  class="row zero_min_height">
+                    <div class="col-12">
+                        <div style="border-bottom: 1px solid black;"/>
+                    </div>
+                </div>
+
+
+                      <table class="table table-sm  table-borderless ">
+
+                        <tbody class="sale_tbody">
+                            <tr>
+                                <td name="td_so">
+                                    <strong>Place:</strong>
+                                </td>
+                            <td>
+                                <span t-field="doc.user_id.city"/>
+                            </td>
+                             </tr>
+                        <tr>
+                    <td>
+                         <strong>Date:</strong>
+                    </td>
+                         <td>
+                             <span  t-field ='doc.date_order'/>
+                        </td>
+                             <td>
+                                 <strong>Signature</strong>
+                             </td>
+                         </tr>
+                   </tbody>
+                </table>
+              </t>
+          </t>
+     </t>
+   </template>
+</odoo>
+

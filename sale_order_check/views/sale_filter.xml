@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<record id="view_sale_order_inherit_search_expand" model="ir.ui.view">
+      <field name="name">sale.order.search.expand.filter</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.sale_order_view_search_inherit_sale"/>
+      <field name="arch" type="xml">
+        <xpath expr="//search" position="inside">
+                 <field name="phone_no"/>
+                 <field name="mobile_no"/>
+
+          <!-- This field will show up on the default filters
+               &lt; is the XML encoding for < and &gt; is the XML encoding for > -->
+          <filter string="Order by Phone No" name="order_phoneno" context="{'group_by': 'phone_no'}"/>
+          <filter string="Order by Mobile No" name="order_mobileno" context="{'group_by': 'mobile_no'}"/>
+        </xpath>
+      </field>
+    </record>
+</odoo>

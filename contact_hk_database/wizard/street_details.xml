@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="return_book_form" model="ir.ui.view">
+        <field name="name">return.street.wizard</field>
+        <field name="model">return.street</field>
+        <field name="arch" type="xml">
+            <form>
+                    <notebook>
+                        <page>
+                            <field name="return_ids" widget="many2many_list">
+                                <tree editable="bottom">
+                                    <control>
+                                      <create name="add_line_control" string="Add a line"/>
+                                    </control>
+                                     <field name="is_selected"/>
+                                     <field name="location"/>
+                                     <field name="street_ids"/>
+                                     <field name="town"/>
+<!--                                    <field name="country"/>-->
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                <footer>
+                    <button name="ret_street" string="OK" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+      <record id="return_book_wizard" model="ir.actions.act_window">
+            <field name="name">Return Street</field>
+            <field name="res_model">return.street</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+</odoo>
