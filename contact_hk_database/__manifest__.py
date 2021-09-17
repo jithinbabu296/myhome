@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Contact HK database",
-    'summary': """Create custom hk databse""",
+    'summary': """Create custom hk database in contact""",
     'author': "SGG",
     'category': 'Uncategorized',
-    'version': '14.0.1',
+    'version': '14.0.1.2',
     'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',
